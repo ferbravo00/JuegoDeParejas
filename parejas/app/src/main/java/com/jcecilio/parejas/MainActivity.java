@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.os.CountDownTimer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -98,12 +99,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MarcadorHTTP.class);
                 startActivity(intent);
-                MarcadorHTTP.cajaPuntosT.setText("hola");
             }
         });
 
 
-        temporizador = new CountDownTimer(15000,1000){
+        temporizador = new CountDownTimer(120000,1000){
             private boolean msg10sg = true;
             public void onTick(long millisUntilFinished){
                 sg= millisUntilFinished / 1000;
@@ -118,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < carta.length; i++) {
                     carta[i].setClickable(false);
                 }
-                puntosFinal.setText("Puntuacion Total: "+puntuacion);
+                pfinal=puntuacion;
+                puntosFinal.setText("Puntuacion Total: "+pfinal);
                 compartir.setVisibility(View.VISIBLE);
             }
         }.start();
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
             98765
             43210
          */
+        //ordenado();
         barajea();
         iniZERO();
         inicia();
@@ -169,12 +171,14 @@ public class MainActivity extends AppCompatActivity {
                                 public void onTick(long millisUntilFinished) {  }
                                 public void onFinish() {
                                     ((ImageView) viewMiCarta).setImageResource(R.drawable._acierto_);
+                                    viewMiCarta.setClickable(false);
                                     //imagenViewAnteriorDestapada.setImageResource(R.drawable._acierto_);
                                 }
                             }.start();
 
                             //((ImageView) viewMiCarta).setImageResource(R.drawable._acierto_);
                             imagenViewAnteriorDestapada.setImageResource(R.drawable._acierto_);
+                            imagenViewAnteriorDestapada.setClickable(false);
                             puntuacion = puntuacion +5;
                             aciertos++;
                             puntos.setText("Puntuacion: "+ puntuacion);
@@ -217,6 +221,26 @@ public class MainActivity extends AppCompatActivity {
         O USAR UNA NUEVA FUNCION QUE BARAJEE REALMENTE COMO DICE EL TEXTO DE ARRIBA
      */
     private void barajea(){
+
+        ArrayList<Integer> lista2 = new ArrayList<>();
+        for(int j = 0; j < idDrawable.length; j++) {
+            posicionesPartida[j] = idDrawable[j];
+        }
+        // relleno de la segunda mitad
+        for(int j = 10; j < idDrawable.length *2; j++) {
+            posicionesPartida[j] = idDrawable[19-j];
+        }
+
+        for (int j = 0; j < posicionesPartida.length; j++) {
+            lista2.add(posicionesPartida[j]);
+        }
+        Collections.shuffle(lista2);
+        for (int j = 0; j < posicionesPartida.length; j++) {
+            posicionesPartida[j]= lista2.get(j);
+        }
+        System.out.println(Arrays.toString(lista2.toArray()));
+    }
+    private void ordenado(){
         // el tamaño de la baraja es 10... en este ejemplo
         // de momento no barajeo para saber donde están las parejas
         for(int j = 0; j < idDrawable.length; j++) {
@@ -227,8 +251,8 @@ public class MainActivity extends AppCompatActivity {
             posicionesPartida[j] = idDrawable[19-j];
         }
     }
-
     /*
+    //Barajea profesor
 
         // el tamaño de la baraja es 10... en este ejemplo
         // de momento no barajeo para saber donde están las parejas
@@ -239,7 +263,6 @@ public class MainActivity extends AppCompatActivity {
         for(int j = 10; j < idDrawable.length *2; j++) {
             posicionesPartida[j] = idDrawable[19-j];
         }
-
 
 
         Función que devuelve la posición de la carta pulsada

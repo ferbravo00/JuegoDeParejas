@@ -22,7 +22,6 @@ public class MarcadorHTTP extends AppCompatActivity {
 
     RequestQueue requestQueue;
 
-    public static EditText cajaPuntosT = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +34,16 @@ public class MarcadorHTTP extends AppCompatActivity {
 
         final Button btEnviar = findViewById(R.id.btnEnviar);
         final EditText cajaJugador =  findViewById(R.id.eTxtJugador);
-        cajaPuntosT =  findViewById(R.id.eTxtPT);
+        final EditText cajaPuntosT =  findViewById(R.id.eTxtPT);
         final EditText cajaPuntosJ =  findViewById(R.id.eTxtPJ);
         final EditText cajaBonus =  findViewById(R.id.eTxtBonus);
         final EditText cajaTiempo =  findViewById(R.id.eTxtTiempo);
         final TextView msjERROR = findViewById(R.id.txtMSJerror);
 
-        cajaPuntosJ.setText(MainActivity.puntuacion);
-        cajaBonus.setText((int)MainActivity.sg*5);
-        cajaTiempo.setText("120");
+        cajaPuntosJ.setText(String.valueOf(MainActivity.puntuacion));
+        cajaPuntosT.setText(String.valueOf(MainActivity.pfinal));
+        cajaBonus.setText(String.valueOf((int)MainActivity.sg*5));
+        cajaTiempo.setText((String.valueOf(120-(int)MainActivity.sg)));
 
         btEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
